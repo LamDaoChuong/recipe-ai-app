@@ -16,8 +16,11 @@ Xây dựng bằng **Streamlit + Supabase (PostgreSQL + pgvector) + SentenceTran
 Cấu trúc dự án
 
 recipe-ai-app/
+
 │
+
 ├── data/
+
 │ └── nguyen_lieu_sach2.csv # dữ liệu gốc
 │
 ├── app.py # Giao diện Streamlit
