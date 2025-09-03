@@ -13,23 +13,20 @@ Xây dựng bằng **Streamlit + Supabase (PostgreSQL + pgvector) + SentenceTran
 
 ---
 
-Cấu trúc dự án
+## Cấu trúc dự án
 
+```text
 recipe-ai-app/
-
 │
-
 ├── data/
-
-│ └── nguyen_lieu_sach2.csv # dữ liệu gốc
-│
-├── app.py # Giao diện Streamlit
-├── recommender.py # Hàm gợi ý từ pgvector
-├── database_setup.py # Tạo bảng & nạp dữ liệu vào Supabase
-├── data_processor.py # Xử lý dữ liệu + sinh embedding
-├── requirements.txt # Thư viện cần thiết
-├── .env.example # Config DB mẫu
-└── README.md # Tài liệu này
+│   └── nguyen_lieu_sach2.csv   # dữ liệu gốc
+├── app.py                      # Giao diện Streamlit
+├── recommender.py              # Hàm gợi ý từ pgvector
+├── database_setup.py           # Tạo bảng & nạp dữ liệu vào Supabase
+├── data_processor.py           # Xử lý dữ liệu + sinh embedding
+├── requirements.txt            # Thư viện cần thiết
+├── .env.example                # Config DB mẫu
+└── README.md                   # Tài liệu này
 
 ---
 
