@@ -3,50 +3,41 @@ from sqlalchemy import create_engine, text
 from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
 
-# Load biến môi trường (DATABASE_URL từ .env)
+# Load biến môi trường
 load_dotenv()
 DB_URL = os.getenv("DATABASE_URL")
 
-# Khởi tạo kết nối DB
-engine = create_engine(DB_URL)
+# Load model embedding
+model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
-# Khởi tạo model embedding
-model = SentenceTransformer("all-MiniLM-L6-v2")
+def get_recommendations(ingredient_query, top_k=5):
+    engine = create_engine(DB_URL)
 
-def recommend(query: str, top_k: int = 5):
-    """
-    Gợi ý món ăn dựa trên nguyên liệu người dùng nhập vào.
-    Trả về danh sách món ăn kèm độ tương đồng.
-    """
-    # Sinh embedding cho input
-    query_emb = model.encode([query])[0].tolist()
+    # Tạo embedding cho nguyên liệu người dùng nhập
+    query_embedding = model.encode(ingredient_query).tolist()
 
-    # Truy vấn PostgreSQL với pgvector
+    # Truy vấn nearest neighbor trong Postgres với pgvector
     with engine.connect() as conn:
-        results = conn.execute(
+        result = conn.execute(
             text("""
-                SELECT
-                    id,
-                    ten_mon,
-                    anh,
-                    video,
-                    url,
-                    nguyen_lieu,
-                    cach_lam,
-                    1 - (embedding <=> :query_emb) AS similarity
+                SELECT id, ten_mon, url, nguyen_lieu,
+                       1 - (embedding <=> (:query_embedding)::vector) AS similarity
                 FROM recipes
-                ORDER BY embedding <=> :query_emb
-                LIMIT :top_k;
+                ORDER BY embedding <=> (:query_embedding)::vector
+                LIMIT :top_k
             """),
-            {"query_emb": query_emb, "top_k": top_k}
-        ).fetchall()
-
-    return results
+            {"query_embedding": query_embedding, "top_k": top_k}
+        )
+        return result.fetchall()
 
 if __name__ == "__main__":
-    test_query = "thịt gà, hành, tỏi"
-    rs = recommend(test_query, top_k=3)
-    for r in rs:
-        print(f"🍲 {r.ten_mon} ({r.similarity:.2f})")
-        print(f"Nguyên liệu: {r.nguyen_lieu}")
-        print("---")
+    print("👉 Nhập nguyên liệu bạn có sẵn (ví dụ: 'mì, kim chi, phô mai'):")
+    user_input = input("Nguyên liệu: ")
+
+    results = get_recommendations(user_input, top_k=5)
+
+    print("\n🎯 Gợi ý món ăn:")
+    for row in results:
+        print(f"- {row.ten_mon} ({row.similarity:.2f})")
+        print(f"  Nguyên liệu: {row.nguyen_lieu}")
+        print(f"  Xem chi tiết: {row.url}\n")

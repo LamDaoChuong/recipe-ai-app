@@ -4,17 +4,21 @@ from sqlalchemy import create_engine, text
 from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
 
-# Load biến môi trường từ file .env
+# Load biến môi trường từ .env
 load_dotenv()
 DB_URL = os.getenv("DATABASE_URL")
 
+# Hàm tạo kết nối và setup DB
 def setup_db():
-    """Tạo bảng recipes trong PostgreSQL"""
     engine = create_engine(DB_URL)
-
     with engine.connect() as conn:
+        # Bật extension pgvector
         conn.execute(text("CREATE EXTENSION IF NOT EXISTS vector"))
+
+        # Xoá bảng nếu tồn tại (để tránh conflict)
         conn.execute(text("DROP TABLE IF EXISTS recipes"))
+
+        # Tạo bảng mới
         conn.execute(text("""
             CREATE TABLE recipes (
                 id SERIAL PRIMARY KEY,
@@ -24,43 +28,45 @@ def setup_db():
                 url TEXT,
                 nguyen_lieu TEXT,
                 cach_lam TEXT,
-                embedding vector(384)
-            );
+                embedding VECTOR(384)
+            )
         """))
-
-    print("✅ Database setup completed")
+        conn.commit()
+    print("✅ Database schema created")
     return engine
 
-def insert_data(engine, csv_path="data/nguyen_lieu_sach2.csv"):
-    """Đọc CSV và insert dữ liệu vào bảng recipes"""
-    df = pd.read_csv(csv_path)
+# Hàm nạp dữ liệu từ CSV
+def insert_data(engine):
+    # Load CSV
+    df = pd.read_csv("data/nguyen_lieu_sach2.csv")
 
-    # Khởi tạo model embedding
-    model = SentenceTransformer("all-MiniLM-L6-v2")
+    # Load model sentence-transformers
+    model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
 
-    # Sinh embedding từ cột Nguyen_lieu
-    embeddings = model.encode(df["Nguyen_lieu"].fillna("").tolist())
+    with engine.connect() as conn:
+        for _, row in df.iterrows():
+            text_to_embed = f"{row['Ten_mon']} {row['Nguyen_lieu']} {row['Cach_lam']}"
+            embedding = model.encode(text_to_embed).tolist()
 
-    with engine.begin() as conn:
-        for i, row in df.iterrows():
             conn.execute(
                 text("""
                     INSERT INTO recipes (ten_mon, anh, video, url, nguyen_lieu, cach_lam, embedding)
                     VALUES (:ten_mon, :anh, :video, :url, :nguyen_lieu, :cach_lam, :embedding)
                 """),
                 {
-                    "ten_mon": row.get("Ten_mon", ""),
-                    "anh": row.get("Anh", ""),
-                    "video": row.get("Video", ""),
-                    "url": row.get("URL", ""),
-                    "nguyen_lieu": row.get("Nguyen_lieu", ""),
-                    "cach_lam": row.get("Cach_lam", ""),
-                    "embedding": embeddings[i].tolist()
+                    "ten_mon": row["Ten_mon"],
+                    "anh": row["Anh"],
+                    "video": row["Video"],
+                    "url": row["URL"],
+                    "nguyen_lieu": row["Nguyen_lieu"],
+                    "cach_lam": row["Cach_lam"],
+                    "embedding": embedding
                 }
             )
-
-    print("✅ Inserted data into database")
+        conn.commit()
+    print("✅ Data inserted into recipes")
 
 if __name__ == "__main__":
     engine = setup_db()
     insert_data(engine)
+    print("🎉 Database setup completed")
