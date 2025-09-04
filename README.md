@@ -25,7 +25,9 @@ recipe-ai-app/
 ├── database_setup.py           # Tạo bảng & nạp dữ liệu vào Supabase
 ├── data_processor.py           # Xử lý dữ liệu + sinh embedding
 ├── requirements.txt            # Thư viện cần thiết
-├── .env.example                # Config DB mẫu
+├── .env.example                # chỉ dùng khi chạy local
+├── .streamlit/                 # chỉ dùng khi deploy
+│   └── secrets.toml
 └── README.md                   # Tài liệu này
 
 ---

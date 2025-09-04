@@ -5,8 +5,17 @@ from sentence_transformers import SentenceTransformer
 from dotenv import load_dotenv
 
 # Load biến môi trường
-load_dotenv()
-DB_URL = os.getenv("DATABASE_URL")
+# Thử load từ st.secrets (deploy trên Cloud)
+DB_URL = st.secrets.get("DB_URL", None)
+
+# Nếu không có (local) thì load từ .env
+if not DB_URL:
+    load_dotenv()
+    DB_URL = os.getenv("DB_URL")
+
+if not DB_URL:
+    st.error("❌ Không tìm thấy DB_URL trong .env hoặc secrets.toml")
+    st.stop()
 
 # Kết nối DB
 engine = create_engine(DB_URL)
