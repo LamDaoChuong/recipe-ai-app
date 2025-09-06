@@ -65,7 +65,7 @@ st.set_page_config(page_title="AI Gợi ý món ăn", page_icon="🍲", layout="
 
 # === Banner đầu trang ===
 st.image(
-    "https://img.freepik.com/premium-photo/top-view-traditional-asian-food-dark-background_1205-3526.jpg",
+    "data/Food_Banner.jpg",
     use_container_width=True,
 )
 

@@ -1,0 +1,16 @@
+# Kết nối Github với máy tính 
+git clone https://github.com/chuong-pqag/recipe-ai-app.git
+cd recipe-ai-app
+
+#Kết nối database
+prostgre project: recipe_ai_app
+pass: Chuong-112358
+connectstring: postgresql://postgres.cyfekkruuahcrbalwhiq:Chuong-112358@aws-1-ap-southeast-1.pooler.supabase.com:5432/postgres
+
+# Cập nhật thông tin từ máy tính lên GitHub
+git add .
+git commit -m "Thêm các file chính cho dự án AI Recipe Recommender"
+git push origin main
+
+# Chạy streamlit trên localhost
+streamlit run app.py
