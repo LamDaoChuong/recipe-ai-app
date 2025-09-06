@@ -11,7 +11,7 @@ DB_URL = st.secrets.get("DB_URL", None)
 # Nếu không có (local) thì load từ .env
 if not DB_URL:
     load_dotenv()
-    DB_URL = os.getenv("DB_URL")
+    DB_URL = os.getenv("DB_URL") or os.getenv("DATABASE_URL")
 
 if not DB_URL:
     st.error("❌ Không tìm thấy DB_URL trong .env hoặc secrets.toml")
