@@ -12,6 +12,9 @@ Xây dựng bằng **Streamlit + Supabase (PostgreSQL + pgvector) + SentenceTran
 - Hiển thị: tên món, ảnh, video hướng dẫn, link tham khảo, nguyên liệu, cách làm.  
 
 ---
+## Demo
+https://recipe-ai-app-v1.streamlit.app/
+---
 
 ## Cấu trúc dự án
 
