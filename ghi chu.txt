@@ -12,5 +12,12 @@ git add .
 git commit -m "Thêm các file chính cho dự án AI Recipe Recommender"
 git push origin main
 
+# Lấy thông tin từ GitHub về máy tính
+git pull origin main
+
 # Chạy streamlit trên localhost
 streamlit run app.py
+
+# Huấn luyện AI nguyên liệu --> Tên món ăn
+python fine_tune_model.py
+

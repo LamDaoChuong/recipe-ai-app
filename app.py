@@ -134,6 +134,6 @@ with col2:
     )
 
     st.markdown("### 📊 Thống kê cơ sở dữ liệu")
-    st.metric("Món ăn có sẵn", "500+")
+    st.metric("Món ăn có sẵn", "2400+")
     st.metric("Kết hợp nguyên liệu", "∞")
     st.metric("Độ chính xác AI", "95%+")
