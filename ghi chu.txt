@@ -1,3 +1,5 @@
+Hệ thống gợi ý món ăn theo nguyên liệu sẵn có (AI Recipe Recommender)
+
 # Kết nối Github với máy tính 
 git clone https://github.com/chuong-pqag/recipe-ai-app.git
 cd recipe-ai-app
