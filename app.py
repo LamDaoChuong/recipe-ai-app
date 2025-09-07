@@ -65,7 +65,7 @@ st.set_page_config(page_title="AI Gợi ý món ăn", page_icon="🍲", layout="
 
 # === Banner đầu trang ===
 st.image(
-    "data/Food_Banner.jpg",
+    "data/Food_Banner_1.jpg",
     use_container_width=True,
 )
 
