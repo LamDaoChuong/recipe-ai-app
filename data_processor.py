@@ -12,17 +12,17 @@ def load_and_process(csv_path="data/nguyen_lieu_sach2.csv"):
     # Điền giá trị rỗng nếu có ô bị NaN
     df = df.fillna("")
 
-    # Khởi tạo model embedding
-    model = SentenceTransformer("all-MiniLM-L6-v2")
+    # Khởi tạo model embedding (sử dụng model đã fine-tune)
+    model = SentenceTransformer("my_recipe_model")  # <--- Thay đổi ở đây
 
     # Sinh embedding từ cột Nguyen_lieu
-    print("🔄 Đang sinh embedding cho nguyên liệu...")
+    print("🔄 Đang sinh embedding cho nguyên liệu (dùng model fine-tune)...")
     embeddings = model.encode(df["Nguyen_lieu"].tolist())
 
     # Gắn embedding vào DataFrame
     df["embedding"] = embeddings.tolist()
 
-    print(f"✅ Đã xử lý {len(df)} món ăn.")
+    print(f"✅ Đã xử lý {len(df)} món ăn với model fine-tune.")
     return df
 
 if __name__ == "__main__":
