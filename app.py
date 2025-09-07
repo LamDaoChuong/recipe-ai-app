@@ -65,7 +65,7 @@ def get_random_recipes(top_k=5):
 #st.set_page_config(page_title="AI Gợi ý món ăn", page_icon="🍲", layout="wide")
 
 # === Banner đầu trang ===
-st.image("data/Food_Banner_.jpg", use_column_width=True)
+st.image("data/Food_Banner_1.jpg", use_column_width=True)
 
 # Sidebar
 st.sidebar.title("🍴 Sở thích của bạn")
