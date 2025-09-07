@@ -24,6 +24,7 @@ Xây dựng bằng **Streamlit + Supabase (PostgreSQL + pgvector) + SentenceTran
 ---
 ## Demo
 https://recipe-ai-app-v1.streamlit.app/
+https://huggingface.co/spaces/chuong-pqag/recipe-ai-app_hf
 ---
 
 ## Cấu trúc dự án

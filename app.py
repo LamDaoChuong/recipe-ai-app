@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 
 # Load biến môi trường
 # Thử load từ st.secrets (deploy trên Cloud)
+st.set_page_config(page_title="AI Gợi ý món ăn", page_icon="🍲", layout="wide")
 DB_URL = st.secrets.get("DB_URL", None)
 
 # Nếu không có (local) thì load từ .env
@@ -61,13 +62,10 @@ def get_random_recipes(top_k=5):
 
 
 # 🚀 Cấu hình giao diện
-st.set_page_config(page_title="AI Gợi ý món ăn", page_icon="🍲", layout="wide")
+#st.set_page_config(page_title="AI Gợi ý món ăn", page_icon="🍲", layout="wide")
 
 # === Banner đầu trang ===
-st.image(
-    "data/Food_Banner_1.jpg",
-    use_container_width=True,
-)
+st.image("data/Food_Banner_1.jpg", use_column_width=True)
 
 # Sidebar
 st.sidebar.title("🍴 Sở thích của bạn")
@@ -109,7 +107,7 @@ with col1:
 
                 with cols[0]:
                     if row.anh:
-                        st.image(row.anh, use_container_width=True)
+                        st.image(row.anh, use_column_width=True)
                     if row.video and "youtube" in row.video:
                         st.video(row.video)
 
